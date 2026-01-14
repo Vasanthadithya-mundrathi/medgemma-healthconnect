@@ -1,0 +1,24 @@
+# Core dependencies
+streamlit>=1.30.0
+torch>=2.1.0
+transformers>=4.36.0
+accelerate>=0.25.0
+bitsandbytes>=0.41.0
+
+# Speech recognition
+speechrecognition>=3.10.0
+pyaudio>=0.2.14
+pydub>=0.25.1
+
+# Medical NLP
+sentence-transformers>=2.2.0
+faiss-cpu>=1.7.4
+
+# Privacy and security
+cryptography>=41.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+pydantic>=2.5.0
+numpy>=1.24.0
+pandas>=2.1.0
