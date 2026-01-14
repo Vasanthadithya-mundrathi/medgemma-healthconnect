@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  medgemma-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: medgemma-healthconnect
+    ports:
+      - "8501:8501"
+    environment:
+      - MODEL_NAME=google/gemma-2b
+      - QUANTIZATION_BITS=4
+      - USE_FLASH_ATTENTION=false
+      - SPEECH_LANGUAGE=en-US
+      - ENABLE_LOGGING=false
+      - STORE_TRANSCRIPTS=false
+      - SESSION_TIMEOUT=300
+    volumes:
+      # Cache for model downloads (optional, for faster restarts)
+      - model-cache:/root/.cache/huggingface
+      # Mount data directory (optional, for custom trials database)
+      - ./data:/app/data:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+        reservations:
+          cpus: '2'
+          memory: 4G
+
+volumes:
+  model-cache:
+    driver: local
+
+networks:
+  default:
+    name: medgemma-network
